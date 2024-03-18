@@ -2,25 +2,25 @@ from Config.EnvService import Env
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.client.telegram import TelegramAPIServer
 
-class Server:
+class ConnectService:
     @staticmethod
     def getWebhookURL():
-        return Env.get("BASE_WEBHOOK_URL")
+        return Env.get("APP_URL")
     
     @staticmethod
-    def getServerHost():
+    def getHost():
         return Env.get("WEB_SERVER_HOST")
     
     @staticmethod
-    def getServerPort():
+    def getPort():
         return Env.get("WEB_SERVER_PORT")
     
     @staticmethod
-    def getServerSession():
+    def getSession():
         return AiohttpSession(
-            api=TelegramAPIServer.from_base(Env.get("API"))
+            api=TelegramAPIServer.from_base(Env.get("TELEGRAM_SERVER"))
         )
     
     @staticmethod
-    def createWebhookPATH(token):
+    def getWebhookPATH(token):
         return f"/{token}/webhook"
