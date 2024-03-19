@@ -3,6 +3,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from Database.db import Database
+from Database.Handlers.DatabaseHandlers import DatabaseHandlers
 
 startRouter = Router()
 db = Database()
@@ -24,18 +25,7 @@ class StartCommandHandler:
     @staticmethod
     @startRouter.message(CommandStart())
     async def start(message: types.Message):
-
-        try:
-            sql_query = "INSERT INTO users (user_id, user_level) VALUES (%s, %s)"
-            data_to_insert = [
-                (message.from_user.id, 0),
-            ]
-            db.execute_query(sql_query, data_to_insert)
-            db.close_connection()
-            await message.reply('Успешная Регистрация')
-        except:
-            await message.reply('Регистрация не прошла')
-
+        DatabaseHandlers.registration(message.from_user.id)
         await message.answer(
             "Вы довольны нашей работой?",
             reply_markup=StartCommandHandler.get_yes_no_kb()
@@ -53,6 +43,6 @@ class StartCommandHandler:
     @startRouter.message(F.text.lower() == "нет")
     async def answer_no(message: types.Message):
         await message.answer(
-            "Иди нахуй, мудак!",
+            "Жаль... :(",
             reply_markup=ReplyKeyboardRemove()
         )

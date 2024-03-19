@@ -19,6 +19,11 @@ class Database:
             self.cursor.execute(query)
         self.connection.commit()
 
+    def fetch_data(self, query):
+        self.cursor.execute(query)
+        result = self.cursor.fetchall()
+        return result
+
     def close_connection(self):
         self.cursor.close()
         self.connection.close()
